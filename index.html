@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Exam Admit Card Portal</title>
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --ink: #1a2332;
+    --muted: #6b7686;
+    --line: #d9dee8;
+    --brand: #123a6b;
+    --brand-ink: #ffffff;
+    --accent: #c8102e;
+    --ok: #0a7d41;
+    --err: #c0392b;
+    --radius: 12px;
+    --shadow: 0 8px 30px rgba(18, 35, 50, 0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Login screen ---------- */
+  .screen {
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+  }
+  .login {
+    width: 100%;
+    max-width: 420px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px 28px;
+  }
+  .login__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .login__brand img { height: 44px; width: auto; }
+  .login__brand h1 { font-size: 1.15rem; margin: 0; line-height: 1.2; }
+  .login__brand p { margin: 2px 0 0; font-size: 0.8rem; color: var(--muted); }
+
+  label { display: block; font-size: 0.82rem; font-weight: 600; margin: 14px 0 6px; }
+  input {
+    width: 100%;
+    padding: 11px 13px;
+    font-size: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--ink);
+  }
+  input:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+  input:user-invalid { border-color: var(--err); }
+  .hint { font-size: 0.75rem; color: var(--muted); margin-top: 5px; }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+    border: 0;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-weight: 600;
+  }
+  .btn-primary {
+    width: 100%;
+    margin-top: 22px;
+    background: var(--brand);
+    color: var(--brand-ink);
+  }
+  .btn-primary:disabled { opacity: 0.6; cursor: progress; }
+  .btn-ghost {
+    background: #eef1f7;
+    color: var(--ink);
+  }
+
+  .msg {
+    margin-top: 16px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.86rem;
+    display: none;
+  }
+  .msg--err { background: #fdecea; color: var(--err); display: block; }
+  .msg--ok { background: #e7f6ed; color: var(--ok); display: block; }
+
+  /* ---------- Result / toolbar ---------- */
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .toolbar .grp { display: flex; gap: 10px; align-items: center; }
+  .toolbar small { color: var(--muted); }
+
+  .stage { padding: 24px; display: grid; place-items: center; gap: 20px; }
+  .btn-download {
+    background: var(--accent);
+    color: #fff;
+    font-size: 1.15rem;
+    padding: 16px 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(200, 16, 46, 0.3);
+    position: sticky;
+    bottom: 20px;
+  }
+  .btn-download:hover { filter: brightness(1.08); }
+  .btn-download:disabled { opacity: 0.6; cursor: progress; }
+
+  /* ---------- Admit card (A4) ---------- */
+  .card {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    color: #000;
+    padding: 16mm 14mm;
+    box-shadow: var(--shadow);
+    font-size: 12pt;
+  }
+  .card__head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 3px solid var(--brand);
+    padding-bottom: 12px;
+  }
+  .card__head img { height: 64px; width: auto; }
+  .card__head .org h2 { margin: 0; font-size: 18pt; color: var(--brand); }
+  .card__head .org p { margin: 2px 0 0; font-size: 10pt; color: #444; }
+  .card__title {
+    text-align: center;
+    margin: 14px 0 18px;
+    font-size: 15pt;
+    letter-spacing: 1px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .card__exam {
+    text-align: center;
+    margin: -8px 0 18px;
+    font-size: 11.5pt;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .card__body { display: flex; gap: 18px; }
+  .card__fields { flex: 1; }
+  .field { display: flex; padding: 7px 0; border-bottom: 1px dotted #bbb; }
+  .field .k { width: 42%; font-weight: 700; color: #333; }
+  .field .v { width: 58%; }
+  .photo {
+    width: 35mm;
+    height: 45mm;
+    border: 1.5px dashed #888;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    font-size: 8.5pt;
+    color: #888;
+    flex: 0 0 auto;
+  }
+  .card__notes { margin-top: 20px; font-size: 9.5pt; }
+  .card__notes h3 { font-size: 10.5pt; margin: 0 0 6px; }
+  .card__notes ol { margin: 0; padding-left: 18px; }
+  .card__audit {
+    margin-top: 16px;
+    padding-top: 8px;
+    border-top: 1px solid #ddd;
+    font-size: 7.5pt;
+    color: #777;
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+
+  .hidden { display: none !important; }
+
+  /* ---------- Print: only the card, A4, no margins fight ---------- */
+  @media print {
+    body { background: #fff; }
+    .toolbar, .noprint { display: none !important; }
+    .stage { padding: 0; }
+    .card { box-shadow: none; width: auto; min-height: auto; padding: 12mm; }
+    @page { size: A4; margin: 6mm; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ CONFIG: edit these four values ============ -->
+<script>
+  const CONFIG = {
+    // Apps Script Web App URL (ends with /exec). See admit-card.gs for how to get it.
+    SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyE03y0j_pLRJ7pW6DUCTs8ei5lA8yGT8QNccThoBd8x-YvwWrAeuuPXEK9-149pCCq/exec",
+    // Shared secret. MUST be identical to APP_SECRET in the Apps Script. Change it from the default.
+    APP_SECRET: "micku-is-the-hero",
+    // Shown on the portal + printed on the card.
+    SCHOOL_NAME: "BRIDGEFORD SCHOOL, TUPUDANA, RANCHI",
+    SCHOOL_SUBTITLE: "Striving For Excellence Since 2001",
+    SCHOOL_SUBTITLE2: "Co-Ed, Pre Nursery to Std. VII · CBSE AFFILIATION NO. 3430177",
+    LOGO_URL: "school-logo.png", // relative to index.html; leave "" to hide
+    EXAM_TITLE: "Admit Card", // printed heading on the card
+    EXAM_NAME: "Entrance Exam Admission Test", // shown with session under the title
+    // Instructions printed on the card (edit freely).
+    INSTRUCTIONS: [
+      "Bring this admit card to the examination centre.",
+      "Affix a recent passport-size photograph in the box provided.",
+    ],
+  };
+</script>
+<!-- ======================================================== -->
+
+<!-- Login -->
+<div class="screen" id="loginScreen">
+  <form class="login" id="loginForm" novalidate>
+    <div class="login__brand">
+      <img id="loginLogo" alt="" />
+      <div>
+        <h1 id="loginSchool"></h1>
+        <p id="loginSub"></p>
+        <p id="loginSub2"></p>
+      </div>
+    </div>
+
+    <label for="name">Full name</label>
+    <input id="name" name="name" type="text" autocomplete="name" required
+           placeholder="As registered" />
+
+    <label for="phone">Phone number</label>
+    <input id="phone" name="phone" type="tel" inputmode="numeric" required
+           maxlength="10" pattern="\d{10}" placeholder="10-digit number" />
+    <div class="hint">Enter the 10-digit number used at registration.</div>
+
+    <button class="btn-primary" id="loginBtn" type="submit">Log in &amp; generate</button>
+    <div class="msg" id="loginMsg" role="status" aria-live="polite"></div>
+  </form>
+</div>
+
+<!-- Result -->
+<div class="hidden" id="resultScreen">
+  <div class="toolbar noprint">
+    <div class="grp">
+      <strong id="rsName"></strong>
+      <small id="rsStatus"></small>
+    </div>
+    <div class="grp">
+      <button class="btn-ghost" id="logoutBtn" type="button">Log out</button>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="card" id="admitCard"></div>
+    <button class="btn-download noprint" id="downloadBtn" type="button">⬇ Download Admit Card (PDF)</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  const normName = (s) => String(s ?? "").trim().toLowerCase().replace(/\s+/g, " ");
+  const normPhone = (s) => String(s ?? "").replace(/\D/g, "");
+
+  // --- paint config into login screen ---
+  (function initLogin() {
+    const logo = $("loginLogo");
+    if (CONFIG.LOGO_URL) { logo.src = CONFIG.LOGO_URL; } else { logo.remove(); }
+    $("loginSchool").textContent = CONFIG.SCHOOL_NAME;
+    $("loginSub").textContent = CONFIG.SCHOOL_SUBTITLE;
+    $("loginSub2").textContent = CONFIG.SCHOOL_SUBTITLE2 || "";
+    document.title = CONFIG.SCHOOL_NAME + " — " + CONFIG.EXAM_TITLE;
+  })();
+
+  let currentRecord = null; // the row returned by the server
+
+  function showMsg(text, kind) {
+    const el = $("loginMsg");
+    el.textContent = text;
+    el.className = "msg msg--" + kind;
+  }
+
+  // POST as text/plain to dodge a CORS preflight against Apps Script.
+  async function callScript(action, payload) {
+    if (!CONFIG.SCRIPT_URL || CONFIG.SCRIPT_URL.startsWith("PASTE_")) {
+      throw new Error("SCRIPT_URL is not configured in this page.");
+    }
+    const res = await fetch(CONFIG.SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action, secret: CONFIG.APP_SECRET, ...payload }),
+    });
+    if (!res.ok) throw new Error("Server error (" + res.status + ")");
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "Request failed");
+    return data;
+  }
+
+  // --- login flow ---
+  $("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = normName($("name").value);
+    const phone = normPhone($("phone").value);
+
+    if (phone.length !== 10) { showMsg("Phone number must be exactly 10 digits.", "err"); return; }
+    if (!name) { showMsg("Please enter your full name.", "err"); return; }
+
+    const btn = $("loginBtn");
+    btn.disabled = true;
+    showMsg("Checking your details…", "ok");
+    try {
+      const data = await callScript("login", { name, phone });
+      currentRecord = data.record;
+      renderCard(currentRecord, data.alreadyDownloaded);
+      $("loginScreen").classList.add("hidden");
+      $("resultScreen").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    } catch (err) {
+      showMsg(err.message === "NOT_FOUND"
+        ? "No matching record found. Check your name and phone number."
+        : err.message, "err");
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  $("logoutBtn").addEventListener("click", () => {
+    currentRecord = null;
+    $("loginForm").reset();
+    $("loginMsg").className = "msg";
+    $("resultScreen").classList.add("hidden");
+    $("loginScreen").classList.remove("hidden");
+  });
+
+  function fieldRow(k, v) {
+    if (v === undefined || v === null || v === "") return "";
+    return `<div class="field"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`;
+  }
+
+  function renderCard(rec, alreadyDownloaded) {
+    $("rsName").textContent = rec.name || "";
+    $("rsStatus").textContent = alreadyDownloaded
+      ? "Previously downloaded — you can download again."
+      : "Ready to download.";
+
+    const logo = CONFIG.LOGO_URL
+      ? `<img src="${esc(CONFIG.LOGO_URL)}" alt="" />` : "";
+
+    // Known fields rendered in a fixed order; extras are appended.
+    const order = [
+      ["Exam Date", rec.exam_date],
+      ["Exam Time", rec.exam_time],
+      ["Session", rec.session],
+      ["Name", rec.name],
+      ["Father's Name", rec.father_name],
+      ["Class", rec.class],
+      ["Phone", rec.phone],
+    ];
+    const known = new Set(["name","father_name","class","phone","exam_date","exam_time","session"]);
+    const rows = order.map(([k, v]) => fieldRow(k, v)).join("");
+    const extra = Object.keys(rec)
+      .filter((k) => !known.has(k) && !k.startsWith("_"))
+      .map((k) => fieldRow(k.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()), rec[k]))
+      .join("");
+
+    const stamp = new Date();
+    const stampStr = stamp.toLocaleString(undefined, {
+      year: "numeric", month: "short", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+    });
+
+    $("admitCard").innerHTML = `
+      <div class="card__head">
+        ${logo}
+        <div class="org">
+          <h2>${esc(CONFIG.SCHOOL_NAME)}</h2>
+          <p>${esc(CONFIG.SCHOOL_SUBTITLE)}</p>
+          ${CONFIG.SCHOOL_SUBTITLE2 ? `<p>${esc(CONFIG.SCHOOL_SUBTITLE2)}</p>` : ""}
+        </div>
+      </div>
+      <div class="card__title">${esc(CONFIG.EXAM_TITLE)}</div>
+      <div class="card__exam">${esc(CONFIG.EXAM_NAME)}${rec.session ? " · Session " + esc(rec.session) : ""}</div>
+      <div class="card__body">
+        <div class="card__fields">${rows}${extra}</div>
+        <div class="photo">Affix recent<br/>passport-size<br/>photograph</div>
+      </div>
+      <div class="card__notes">
+        <h3>Instructions</h3>
+        <ol>${CONFIG.INSTRUCTIONS.map((i) => `<li>${esc(i)}</li>`).join("")}</ol>
+      </div>
+      <div class="card__audit" id="auditLine">
+        Generated on ${esc(stampStr)} · ${esc(CONFIG.SCHOOL_NAME)} exam portal
+      </div>`;
+  }
+
+  // --- download: log to sheet, then print to PDF ---
+  $("downloadBtn").addEventListener("click", async () => {
+    if (!currentRecord) return;
+    const btn = $("downloadBtn");
+    btn.disabled = true;
+    const when = new Date();
+    const whenStr = when.toLocaleString();
+    try {
+      await callScript("logDownload", {
+        phone: normPhone(currentRecord.phone),
+        name: normName(currentRecord.name),
+        downloadedAt: when.toISOString(),
+      });
+      // Stamp the audit line with confirmed download time before printing.
+      const audit = $("auditLine");
+      if (audit) {
+        audit.textContent =
+          `Downloaded on ${whenStr} · ${CONFIG.SCHOOL_NAME} exam portal · This is a system-generated admit card.`;
+      }
+      $("rsStatus").textContent = "Downloaded on " + whenStr + ".";
+    } catch (err) {
+      // Logging failed: let them print anyway, but mark the trail honestly.
+      const audit = $("auditLine");
+      if (audit) {
+        audit.textContent =
+          `Downloaded on ${whenStr} (server log unconfirmed) · ${CONFIG.SCHOOL_NAME} exam portal`;
+      }
+      $("rsStatus").textContent = "Download logged locally (server not reached).";
+    } finally {
+      btn.disabled = false;
+      // Native print -> "Save as PDF". Deterministic A4 via @page.
+      window.print();
+    }
+  });
+})();
+</script>
+</body>
+</html>
