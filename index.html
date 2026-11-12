@@ -226,6 +226,7 @@
     INSTRUCTIONS: [
       "Bring this admit card to the examination centre.",
       "Affix a recent passport-size photograph in the box provided.",
+      "Required stationery (pen/pencil,eraser,sharpener etc.) are to be brought by the applicant."
     ],
   };
 </script>
@@ -372,12 +373,12 @@
     // Known fields rendered in a fixed order; extras are appended.
     const order = [
       ["Exam Date", rec.exam_date],
-      ["Exam Time", rec.exam_time],
-      ["Session", rec.session],
-      ["Name", rec.name],
+      ["Reporting Time", rec.exam_time],
+     // ["Session", rec.session],
+      ["Candidates's name", rec.name],
       ["Father's Name", rec.father_name],
-      ["Class", rec.class],
-      ["Phone", rec.phone],
+      ["Class applied for", rec.class],
+      ["Phone No.", rec.phone],
     ];
     const known = new Set(["name","father_name","class","phone","exam_date","exam_time","session"]);
     const rows = order.map(([k, v]) => fieldRow(k, v)).join("");
