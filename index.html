@@ -420,7 +420,7 @@
   <div>
     Generated on ${esc(stampStr)} · ${esc(CONFIG.SCHOOL_NAME)} exam portal
   </div>
-</div>';
+</div>`;
   }
 
   // --- download: log to sheet, then print to PDF ---
@@ -448,7 +448,7 @@
       // Logging failed: let them print anyway, but mark the trail honestly.
       const audit = $("auditLine");
       if (audit) {
-        audit.textContent =
+        audit.innerHTML =
           `Downloaded on ${whenStr} (server log unconfirmed) · ${CONFIG.SCHOOL_NAME} exam portal`;
       }
       $("rsStatus").textContent = "Download logged locally (server not reached).";
