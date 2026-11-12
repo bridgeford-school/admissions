@@ -220,13 +220,13 @@
     SCHOOL_SUBTITLE: "Striving For Excellence Since 2001",
     SCHOOL_SUBTITLE2: "Co-Ed, Pre Nursery to Std. VII · CBSE AFFILIATION NO. 3430177",
     LOGO_URL: "school-logo.png", // relative to index.html; leave "" to hide
-    EXAM_TITLE: "Admit Card", // printed heading on the card
-    EXAM_NAME: "Entrance Exam Admission Test", // shown with session under the title
-    // Instructions printed on the card (edit freely).
-    INSTRUCTIONS: [
-      "Bring this admit card to the examination centre.",
+    EXAM_TITLE: "ENTRANCE ASSESSMENT - ADMIT CARD", // printed heading on the card
+    EXAM_NAME: "Academic ", // shown with session under the title
+    // Important Instructions printed on the card (edit freely).
+    IMPORTANT INSTRUCTIONS: [
+      "Carry this admit card to the examination centre.",
       "Affix a recent passport-size photograph in the box provided.",
-      "Required stationery (pen/pencil,eraser,sharpener etc.) are to be brought by the applicant."
+      "Bring the required stationery (Pen/Pencil, eraser, sharpener, etc.)."
     ],
   };
 </script>
@@ -372,13 +372,13 @@
 
     // Known fields rendered in a fixed order; extras are appended.
     const order = [
-      ["Exam Date", rec.exam_date],
-      ["Reporting Time", rec.exam_time],
+      ["Date of Examination:", rec.exam_date],
+      ["Reporting Time:", rec.exam_time],
      // ["Session", rec.session],
-      ["Candidates's name", rec.name],
-      ["Father's Name", rec.father_name],
-      ["Class applied for", rec.class],
-      ["Phone No.", rec.phone],
+      ["Candidate's name:", rec.name],
+      ["Father's Name:", rec.father_name],
+      ["Class Applied For:", rec.class],
+      ["Parent's Contact Number:", rec.phone],
     ];
     const known = new Set(["name","father_name","class","phone","exam_date","exam_time","session"]);
     const rows = order.map(([k, v]) => fieldRow(k, v)).join("");
@@ -433,8 +433,9 @@
       // Stamp the audit line with confirmed download time before printing.
       const audit = $("auditLine");
       if (audit) {
-        audit.textContent =
-          `Downloaded on ${whenStr} · ${CONFIG.SCHOOL_NAME} exam portal · This is a system-generated admit card.`;
+        audit.innerHTML =
+          `NOTE: This admit card is valid for one entrance test only and cannot be reused under any circumstances.<br><br>
+               Downloaded on ${whenStr} · ${CONFIG.SCHOOL_NAME} exam portal · This is a system-generated admit card.`;
       }
       $("rsStatus").textContent = "Downloaded on " + whenStr + ".";
     } catch (err) {
