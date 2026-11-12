@@ -222,8 +222,8 @@
     LOGO_URL: "school-logo.png", // relative to index.html; leave "" to hide
     EXAM_TITLE: "ENTRANCE ASSESSMENT - ADMIT CARD", // printed heading on the card
     EXAM_NAME: "Academic ", // shown with session under the title
-    // Important Instructions printed on the card (edit freely).
-    IMPORTANT INSTRUCTIONS: [
+    // Instructions printed on the card (edit freely).
+    INSTRUCTIONS: [
       "Carry this admit card to the examination centre.",
       "Affix a recent passport-size photograph in the box provided.",
       "Bring the required stationery (Pen/Pencil, eraser, sharpener, etc.)."
@@ -409,7 +409,7 @@
         <div class="photo">Affix recent<br/>passport-size<br/>photograph</div>
       </div>
       <div class="card__notes">
-        <h3>Instructions</h3>
+        <h3>IMPORTANT INSTRUCTIONS</h3>
         <ol>${CONFIG.INSTRUCTIONS.map((i) => `<li>${esc(i)}</li>`).join("")}</ol>
       </div>
       <div class="card__audit" id="auditLine">
@@ -433,7 +433,7 @@
       // Stamp the audit line with confirmed download time before printing.
       const audit = $("auditLine");
       if (audit) {
-        audit.textContent =
+        audit.innerHTML =
           `NOTE: This admit card is valid for one entrance test only and cannot be reused under any circumstances.<br><br>
                Downloaded on ${whenStr} · ${CONFIG.SCHOOL_NAME} exam portal · This is a system-generated admit card.`;
       }
