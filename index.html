@@ -218,7 +218,7 @@
     // Shown on the portal + printed on the card.
     SCHOOL_NAME: "BRIDGEFORD SCHOOL, TUPUDANA, RANCHI",
     SCHOOL_SUBTITLE: "Striving For Excellence Since 2001",
-    SCHOOL_SUBTITLE2: "Co-Ed, Pre Nursery to Std. VII · CBSE AFFILIATION NO. 3430177",
+    SCHOOL_SUBTITLE2: "Co-Ed, Pre Nursery to Std. XII · CBSE AFFILIATION NO. 3430177",
     LOGO_URL: "school-logo.png", // relative to index.html; leave "" to hide
     EXAM_TITLE: "ENTRANCE ASSESSMENT - ADMIT CARD", // printed heading on the card
     EXAM_NAME: "Academic ", // shown with session under the title
@@ -412,11 +412,16 @@
         <h3>IMPORTANT INSTRUCTIONS</h3>
         <ol>${CONFIG.INSTRUCTIONS.map((i) => `<li>${esc(i)}</li>`).join("")}</ol>
       </div>
-      <div class="card__audit" id="auditLine">
-        <strong>NOTE:</strong> This admit card is valid for one entrance test only and cannot be reused under any circumstances.
-        <br><br>
-        Generated on ${esc(stampStr)} · ${esc(CONFIG.SCHOOL_NAME)} exam portal
-      </div>`;
+     
+<div class="card__audit" id="auditLine">
+  <div style="font-weight:700; color:#333; margin-bottom:6px;">
+    NOTE: This admit card is valid for one entrance test only and cannot be reused under any circumstances.
+  </div>
+  <div>
+    Generated on ${esc(stampStr)} · ${esc(CONFIG.SCHOOL_NAME)} exam portal
+  </div>
+</div>
+;
   }
 
   // --- download: log to sheet, then print to PDF ---
