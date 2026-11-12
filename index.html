@@ -433,7 +433,7 @@
       // Stamp the audit line with confirmed download time before printing.
       const audit = $("auditLine");
       if (audit) {
-        audit.innerHTML =
+        audit.textContent =
           `NOTE: This admit card is valid for one entrance test only and cannot be reused under any circumstances.<br><br>
                Downloaded on ${whenStr} · ${CONFIG.SCHOOL_NAME} exam portal · This is a system-generated admit card.`;
       }
