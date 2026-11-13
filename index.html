@@ -375,7 +375,7 @@
       ["Date of Examination:", rec.exam_date],
       ["Reporting Time:", rec.exam_time],
      // ["Session", rec.session],
-      ["Candidate's name:", rec.name],
+      ["Candidate's Name:", rec.name],
       ["Father's Name:", rec.father_name],
       ["Class Applied For:", rec.class],
       ["Parent's Contact Number:", rec.phone],
@@ -403,7 +403,7 @@
         </div>
       </div>
       <div class="card__title">${esc(CONFIG.EXAM_TITLE)}</div>
-      <div class="card__exam">${esc(CONFIG.EXAM_NAME)}${rec.session ? " · Session " + esc(rec.session) : ""}</div>
+      <div class="card__exam">${esc(CONFIG.EXAM_NAME)}${rec.session ? "  Session " + esc(rec.session) : ""}</div>
       <div class="card__body">
         <div class="card__fields">${rows}${extra}</div>
         <div class="photo">Affix recent<br/>passport-size<br/>photograph</div>
