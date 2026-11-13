@@ -204,6 +204,15 @@
     .card { -shadow: none; width: auto; min-height: auto; padding: 12mm; }
     @page { size: A4; margin: 6mm; }
   }
+  /* Increase school logo size on mobile login page only */
+@media screen and (max-width: 600px) {
+  #loginLogo {
+    width: 88px !important;
+    height: 88px !important;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+}
 </style>
 </head>
 <body>
@@ -217,7 +226,7 @@
     APP_SECRET: "micku-is-the-hero",
     // Shown on the portal + printed on the card.
     SCHOOL_NAME: "BRIDGEFORD SCHOOL, TUPUDANA, RANCHI",
-    SCHOOL_SUBTITLE: "Striving For Excellence Since 2001",
+    SCHOOL_SUBTITLE: "Striving for Excellence Since 2001",
     SCHOOL_SUBTITLE2: "Co-Ed, Pre Nursery to Std. XII · CBSE AFFILIATION NO. 3430177",
     LOGO_URL: "school-logo.png", // relative to index.html; leave "" to hide
     EXAM_TITLE: "ENTRANCE ASSESSMENT - ADMIT CARD", // printed heading on the card
