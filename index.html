@@ -433,7 +433,7 @@
         <div class="org">
           <h2>${esc(CONFIG.SCHOOL_NAME)}</h2>
           <p>${esc(CONFIG.SCHOOL_SUBTITLE)}</p>
-          ${CONFIG.SCHOOL_SUBTITLE2 ? `<p>${esc(CONFIG.SCHOOL_SUBTITLE2)}</p>` : ""}
+         ${CONFIG.SCHOOL_SUBTITLE2 ? '<p style="white-space: pre-line;">' + esc(CONFIG.SCHOOL_SUBTITLE2) + '</p>' : ''}
         </div>
       </div>
       <div class="card__title">${esc(CONFIG.EXAM_TITLE)}</div>
