@@ -45,10 +45,13 @@
     -shadow: var(--shadow);
     padding: 32px 28px;
   }
+/* Login header: centered logo above centered text */
   .login__brand {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
+    text-align: center;
+    gap: 10px;
     margin-bottom: 22px;
   }
   .login__brand img { height: 44px; width: auto; }
@@ -140,16 +143,20 @@
     -shadow: var(--shadow);
     font-size: 12pt;
   }
+/* Admit card header: centered logo + text block */
   .card__head {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 14px;
+    text-align: center;
+    gap: 10px;
     border-bottom: 3px solid var(--brand);
-    padding-bottom: 12px;
+    padding-bottom: 14px;
   }
-  .card__head img { height: 64px; width: auto; }
+  .card__head img { height: 76px; width: auto; }
   .card__head .org h2 { margin: 0; font-size: 18pt; color: var(--brand); }
-  .card__head .org p { margin: 2px 0 0; font-size: 10pt; color: #444; }
+  .card__head .org p { margin: 3px 0 0; font-size: 10pt; color: #444; }
+
   .card__title {
     text-align: center;
     margin: 14px 0 18px;
